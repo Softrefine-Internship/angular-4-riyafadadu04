@@ -1,0 +1,115 @@
+<div class="container mt-4">
+  <div class="row">
+    <div class="col-8 mb-3">
+      <label for="selectColumn"><strong>Search : </strong></label>
+      <input
+        type="text"
+        class="form-control mt-2"
+        placeholder="Search..."
+        [(ngModel)]="searchKeyword"
+        (input)="onSearch()"
+      />
+    </div>
+    <div class="col-4 mb-3">
+      <label for="selectColumn"
+        ><strong>Select Column for sorting :</strong></label
+      >
+      <div class="col mt-2">
+        <select
+          class="form-control"
+          name="column"
+          id="column"
+          (change)="onSelectSort($event)"
+        >
+          <option value="">-- Select Column --</option>
+          <option value="id">ID</option>
+          <option value="firstName">First Name</option>
+          <option value="lastName">Last Name</option>
+          <option value="age">Age</option>
+          <option value="phone">Phone No.</option>
+          <option value="email">Email</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <table class="table table-bordered table-striped">
+    <thead>
+      <tr>
+        <th (click)="onSort('id')">
+          ID
+          <span *ngIf="sortColumn === 'id'">{{
+            sortDirection === "asc" ? " ▲" : " ▼"
+          }}</span>
+        </th>
+        <th (click)="onSort('firstName')">
+          First Name<span *ngIf="sortColumn === 'firstName'">{{
+            sortDirection === "asc" ? " ▲" : " ▼"
+          }}</span>
+        </th>
+        <th (click)="onSort('lastName')">
+          Last Name<span *ngIf="sortColumn === 'lastName'">{{
+            sortDirection === "asc" ? " ▲" : " ▼"
+          }}</span>
+        </th>
+        <th (click)="onSort('age')">
+          Age<span *ngIf="sortColumn === 'age'">{{
+            sortDirection === "asc" ? " ▲" : " ▼"
+          }}</span>
+        </th>
+        <th (click)="onSort('phone')">
+          Phone No.<span *ngIf="sortColumn === 'phone'">{{
+            sortDirection === "asc" ? " ▲" : " ▼"
+          }}</span>
+        </th>
+        <th (click)="onSort('email')">
+          Email<span *ngIf="sortColumn === 'email'">{{
+            sortDirection === "asc" ? " ▲" : " ▼"
+          }}</span>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr
+        *ngFor="let user of paginatedUsers; let i = index"
+        [ngStyle]="{
+          backgroundColor: i % 2 === 0 ? '#f9f9f9' : '#ffffff'
+        }"
+      >
+        <td>{{ user.id }}</td>
+        <td>{{ user.firstName }}</td>
+        <td>{{ user.lastName }}</td>
+        <td>{{ user.age }}</td>
+        <td>{{ user.phone }}</td>
+        <td>{{ user.email }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <nav aria-label="Page navigation" class="mt-3">
+    <ul class="pagination justify-content-center">
+      <li
+        class="page-item"
+        [class.disabled]="currentPage === 1"
+        (click)="changePage(currentPage - 1)"
+      >
+        <a class="page-link">Previous</a>
+      </li>
+      <li
+        class="page-item"
+        *ngFor="let page of [].constructor(totalPages); let i = index"
+        [class.active]="currentPage === i + 1"
+        (click)="changePage(i + 1)"
+      >
+        <a class="page-link">{{ i + 1 }}</a>
+      </li>
+      <li
+        class="page-item"
+        [class.disabled]="currentPage === totalPages"
+        (click)="changePage(currentPage + 1)"
+      >
+        <a class="page-link">Next</a>
+      </li>
+    </ul>
+  </nav>
+</div>
